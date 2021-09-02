@@ -1,0 +1,12 @@
+.root-container {
+  width: 100% !important;
+  height: 100%;
+}
+.root-nav {
+  width: 200px;
+  height: 100%;
+}
+.root-content {
+  width: 80%;
+  height: 100%;
+}
