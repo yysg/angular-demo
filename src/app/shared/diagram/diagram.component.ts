@@ -8,20 +8,24 @@ import {
   Output,
   ViewChild,
   SimpleChanges,
-  EventEmitter
+  EventEmitter,
+  OnInit
 } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { map, switchMap } from 'rxjs/operators';
 import { from, Observable, Subscription } from 'rxjs';
 import * as BpmnModeler from 'bpmn-js/dist/bpmn-modeler.production.min.js';
+import propertiesPanelModule from 'bpmn-js-properties-panel';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import * as camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.css']
 })
-export class DiagramComponent implements AfterContentInit, OnChanges, OnDestroy {
+export class DiagramComponent implements OnInit, AfterContentInit, OnChanges, OnDestroy {
   private BpmnModeler: BpmnModeler;
 
   @ViewChild('ref', { static: true })
@@ -30,9 +34,21 @@ export class DiagramComponent implements AfterContentInit, OnChanges, OnDestroy 
 
   @Input() url: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) { }
 
-    this.BpmnModeler = new BpmnModeler();
+  ngOnInit(): void {
+    this.BpmnModeler = new BpmnModeler({
+      propertiesPanel: {
+        parent: '#diagram-properties-panel'
+      },
+      additionalModules: [
+        propertiesPanelModule,
+        propertiesProviderModule
+      ],
+      moddleExtensions: {
+        camunda: camundaModdleDescriptor
+      }
+    });
 
     this.BpmnModeler.on('import.done', (event: any) => {
       if (!event.error) {
@@ -90,5 +106,14 @@ export class DiagramComponent implements AfterContentInit, OnChanges, OnDestroy 
    */
   private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
     return from(this.BpmnModeler.importXML(xml) as Promise<{ warnings: Array<any> }>);
+  }
+
+  async exportDiagram() {
+    try {
+      const { xml } = await this.BpmnModeler.saveXML()
+      console.log(xml)
+    } catch (err: any) {
+      console.log(err);
+    }
   }
 }

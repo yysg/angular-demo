@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-demo';
-  navs = [{ name: "bpmn", link: "/bpmn" }]
+  navs = [{ name: "bpmn", link: "/bpmn" },
+  { name: "test", link: "/test" }]
 }

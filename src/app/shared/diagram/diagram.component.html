@@ -1,1 +1,12 @@
-<div #ref class="diagram-container"></div>
+
+<div class="diagram-container">
+  <div #ref class="diagram-panel">
+    <div class="diagram-toolbox">
+      <button mat-icon-button color="warn" class="diagram-export" (click)="exportDiagram()">
+        <mat-icon>favorite</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div id="diagram-properties-panel" class="diagram-properties-panel"> </div>
+    
+</div>
