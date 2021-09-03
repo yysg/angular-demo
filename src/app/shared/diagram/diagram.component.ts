@@ -41,10 +41,12 @@ export class DiagramComponent implements OnInit, AfterContentInit, OnChanges, On
       propertiesPanel: {
         parent: '#diagram-properties-panel'
       },
+      // bpmn-js-properties-panel 插件
       additionalModules: [
         propertiesPanelModule,
         propertiesProviderModule
       ],
+      // camunda-bpmn-moddlel 插件
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       }
